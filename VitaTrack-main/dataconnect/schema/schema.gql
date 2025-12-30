@@ -1,0 +1,74 @@
+type User @table {
+  email: String!
+  passwordHash: String
+  providerId: String
+  providerType: String
+  displayName: String!
+  role: String!
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+type Ambulance @table {
+  plateNumber: String!
+  model: String
+  status: String!
+  currentDriver: User
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+type Patient @table {
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Date
+  contactNumber: String
+  familyMember: User
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+type DispatchAssignment @table {
+  ambulance: Ambulance!
+  driver: User!
+  patient: Patient
+  status: String!
+  pickupLocationLat: Float!
+  pickupLocationLng: Float!
+  destinationLat: Float!
+  destinationLng: Float!
+  dispatchTime: Timestamp
+  actualArrivalTime: Timestamp
+  notes: String
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+type AmbulanceLocation @table {
+  ambulance: Ambulance!
+  latitude: Float!
+  longitude: Float!
+  timestamp: Timestamp
+  speed: Float
+  heading: Float
+}
+
+type Notification @table {
+  recipient: User!
+  type: String!
+  message: String!
+  assignment: DispatchAssignment
+  isRead: Boolean
+  sentAt: Timestamp
+}
+
+type ActivityLog @table {
+  actor: User
+  ambulance: Ambulance
+  assignment: DispatchAssignment
+  eventType: String!
+  oldValue: String
+  newValue: String
+  description: String
+  timestamp: Timestamp
+}
